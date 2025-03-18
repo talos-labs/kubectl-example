@@ -2,10 +2,12 @@ package main
 
 import (
 	"bufio"
+	"embed"
 	"fmt"
-	"net/http"
 	"os"
 )
+
+var tplFS embed.FS
 
 func printUsage(failure bool) {
 	if failure {
@@ -18,18 +20,24 @@ func printUsage(failure bool) {
 }
 
 func downloadAndPrintResource(name string) {
-	url := fmt.Sprintf("https://raw.githubusercontent.com/seredot/kubectl-example/master/resources/%s.yaml", name)
-	resp, err := http.Get(url)
+	resources, err := tplFS.ReadDir("resources")
 	if err != nil {
-		fmt.Printf("Error downloading resource %v: ", err)
-		os.Exit(1)
+		panic(err)
 	}
-	defer resp.Body.Close()
+	for _, resource := range resources {
+		if resource.Name() == name+".yaml" {
+			resp, err := tplFS.Open("resources/" + resource.Name())
+			if err != nil {
+				panic(err)
+			}
+			scanner := bufio.NewScanner(resp)
+			for scanner.Scan() {
+				fmt.Println(scanner.Text())
+			}
+		}
 
-	scanner := bufio.NewScanner(resp.Body)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
 	}
+
 }
 
 func main() {
