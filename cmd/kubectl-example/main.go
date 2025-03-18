@@ -20,7 +20,7 @@ func printUsage(failure bool) {
 }
 
 func downloadAndPrintResource(name string) {
-	resources, err := tplFS.ReadDir("resources")
+	resources, err := tplFS.ReadDir("../../resources")
 	if err != nil {
 		panic(err)
 	}
