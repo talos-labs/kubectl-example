@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+//go:embed resources/*
 var tplFS embed.FS
 
 func printUsage(failure bool) {
