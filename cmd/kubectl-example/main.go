@@ -31,6 +31,7 @@ func downloadAndPrintResource(name string) {
 			if err != nil {
 				panic(err)
 			}
+			defer resp.Close()
 			scanner := bufio.NewScanner(resp)
 			for scanner.Scan() {
 				fmt.Println(scanner.Text())
