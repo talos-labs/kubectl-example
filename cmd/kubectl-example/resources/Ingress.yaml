@@ -25,3 +25,29 @@ spec:
                 name: service2
                 port: 
                   number: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: foo
+  namespace: foo
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  tls:
+    - hosts:
+        - foo.bar.com
+      secretName: foo
+  rules:
+    - host: foo.bar.com
+      http:
+        paths:
+          - path: /foo(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: foo
+                port:
+                  number: 9091
