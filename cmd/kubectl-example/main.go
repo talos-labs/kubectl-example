@@ -2,9 +2,10 @@ package main
 
 import (
 	"embed"
-	_ "embed"
 	"fmt"
+	"log"
 	"os"
+	"strings"
 )
 
 //go:embed resources/*
@@ -14,20 +15,22 @@ func printUsage(failure bool) {
 	if failure {
 		fmt.Println("Not enough arguments")
 	}
-	fmt.Println("Usage: example <RESOURCE_NAME>")
-	if failure {
-		os.Exit(1)
+	fmt.Println("Usage: example <RESOURCE_NAME>\nResources:")
+	files, err := os.ReadDir("cmd/kubectl-example/resources")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, file := range files {
+		fmt.Printf("- %s \n", strings.Split(file.Name(), ".")[0])
 	}
 }
 
-//go:embed resources/*.yaml
-var resourceFS embed.FS
-
 func downloadAndPrintResource(name string) {
 	path := fmt.Sprintf("resources/%s.yaml", name)
-	data, err := resourceFS.ReadFile(path)
+	data, err := tplFS.ReadFile(path)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	fmt.Println(string(data))
 }
