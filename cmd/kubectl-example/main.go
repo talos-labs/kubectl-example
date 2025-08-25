@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"embed"
+	_ "embed"
 	"fmt"
 	"os"
 )
@@ -20,26 +20,16 @@ func printUsage(failure bool) {
 	}
 }
 
+//go:embed resources/*.yaml
+var resourceFS embed.FS
+
 func downloadAndPrintResource(name string) {
-	resources, err := tplFS.ReadDir("../../resources")
+	path := fmt.Sprintf("resources/%s.yaml", name)
+	data, err := resourceFS.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}
-	for _, resource := range resources {
-		if resource.Name() == name+".yaml" {
-			resp, err := tplFS.Open("resources/" + resource.Name())
-			if err != nil {
-				panic(err)
-			}
-			defer resp.Close()
-			scanner := bufio.NewScanner(resp)
-			for scanner.Scan() {
-				fmt.Println(scanner.Text())
-			}
-		}
-
-	}
-
+	fmt.Println(string(data))
 }
 
 func main() {
