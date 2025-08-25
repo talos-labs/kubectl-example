@@ -40,7 +40,7 @@ spec:
 
 #### Or download precompiled binaries
 
-Github releases [link](https://github.com/seredot/kubectl-example/releases).
+Github releases [link](https://github.com/talos-labs/kubectl-example/releases).
 
 #### Installing as a `kubectl` plugin
 
