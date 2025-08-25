@@ -58,3 +58,9 @@ and then can be used with `kubectl` as
 `make build-docker`
 
 `docker run --rm -i -t kubectl-example deploy`
+
+#### Acknowledgements
+
+This project is a fork of the work of [xuguohao123456/kubectl-example](https://github.com/xuguohao123456/kubectl-example) which itself is a fork of [seredot/kubectl-example](https://github.com/seredot/kubectl-example)
+
+
