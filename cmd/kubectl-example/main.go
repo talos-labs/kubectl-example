@@ -16,7 +16,7 @@ func printUsage(failure bool) {
 		fmt.Println("Not enough arguments")
 	}
 	fmt.Println("Usage: example <RESOURCE_NAME>\nResources:")
-	files, err := os.ReadDir("cmd/kubectl-example/resources")
+	files, err := tplFS.ReadDir("resources")
 	if err != nil {
 		log.Fatal(err)
 	}
